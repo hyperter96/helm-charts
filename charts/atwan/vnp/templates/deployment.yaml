@@ -1,0 +1,133 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vnp.fullname" . }}
+  namespace: {{ .Values.namespace | quote }}
+  labels:
+    {{- include "vnp.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "vnp.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "vnp.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: {{ include "vnp.fullname" . }}
+          persistentVolumeClaim:
+            claimName: {{ include "vnp.fullname" . }}
+      initContainers:
+        - name: configinit
+          image: "{{ .Values.initImage.repository }}:{{ .Values.initImage.tag }}"
+          command:
+            - /bin/sh
+            - '-c'
+            - >-
+              curl -fL
+              https://package.vertexwan.cn/package/vnp/vnp-prod-latest.tar.gz -o
+              vbox-dev-rootfs-prod-latest.tar.gz &&mkdir vbox &&mv
+              vbox-dev-rootfs-prod-latest.tar.gz vbox/ &&cd vbox/ &&tar -zxvf
+              vbox-dev-rootfs-prod-latest.tar.gz &&cp -r -n etc/* /vedge/etc
+              && cp -rf /etc/init.d/* /vedge/etc/init.d/ && cp -rf /etc/rc.* /vedge/etc/
+              &&chmod -R 777 /vedge/etc/
+          resources: {}
+          volumeMounts:
+            - name: {{ include "vnp.fullname" . }}
+              mountPath: /vedge/etc
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: {{ .Values.initImage.pullPolicy }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          env:
+            - name: SN
+              value: {{ include "vnp.fullname" . }}
+          volumeMounts:
+            - name: {{ include "vnp.fullname" . }}
+              mountPath: /etc
+          livenessProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
+          startupProbe:
+            tcpSocket:
+              port: 5555
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          securityContext:
+            privileged: true
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+      hostAliases:
+        - ip: 10.208.0.21
+          hostnames:
+            - api.vertexwan.cn
+        - ip: 172.25.0.36
+          hostnames:
+            - mqtt.vertexwan.cn
+        - ip: 10.208.0.5
+          hostnames:
+            - auth.vertexwan.cn
+        - ip: 172.24.0.31
+          hostnames:
+            - logstash.vertexwan.cn
+        - ip: 10.208.0.21
+          hostnames:
+            - package.vertexwan.cn
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
