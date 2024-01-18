@@ -12,16 +12,16 @@
 1. Update repo and search
     ```
     helm search repo hyperter96
-    NAME                     	CHART VERSION	APP VERSION	DESCRIPTION
-    hyperter96/atwan/vnp    	0.1.0        	v1.16.0     A Helm chart for Kubernetes
+    NAME                CHART VERSION	APP VERSION	DESCRIPTION
+    hyperter96/vnp    	0.1.0        	v1.16.0     A Helm chart for Kubernetes
     ```
 1. Install
     ```
-    helm install vnp hyperter96/atwan/vnp
+    helm install vnp hyperter96/vnp
     ```
 1. Upgrade (optional)
     ```
-    helm upgrade vnp hyperter96/atwan/vnp --set xxx=aaa
+    helm upgrade vnp hyperter96/vnp --set xxx=aaa
     ```
 1. Uninstall
     ```
