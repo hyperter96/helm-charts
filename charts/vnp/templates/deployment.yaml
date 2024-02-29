@@ -100,7 +100,7 @@ spec:
       dnsPolicy: ClusterFirst
       schedulerName: default-scheduler
       hostAliases:
-        - ip: 10.208.0.21
+        - ip: 210.14.77.209
           hostnames:
             - api.vertexwan.cn
         - ip: 172.25.0.36
@@ -112,7 +112,7 @@ spec:
         - ip: 172.24.0.31
           hostnames:
             - logstash.vertexwan.cn
-        - ip: 10.208.0.21
+        - ip: 210.14.77.209
           hostnames:
             - package.vertexwan.cn
       {{- with .Values.nodeSelector }}
