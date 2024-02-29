@@ -14,7 +14,7 @@ initImage:
   repository: dockerhub.vertexwan.cn/atwan/vnpconfiginit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "centos7"
 
 imagePullSecrets: []
 nameOverride: ""
