@@ -8,13 +8,13 @@ image:
   repository: dockerhub.vertexwan.cn/atwan/vnp-prod
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2023-08-18-1.5.0.2"
+  tag: "latest"
 
 initImage:
   repository: dockerhub.vertexwan.cn/atwan/vnpconfiginit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "centos7"
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -94,7 +94,7 @@ persistence:
   enabled: true
   accessMode: ReadWriteOnce
   size: 50Mi
-  storageClass: newhk
+  storageClass: openebs-hostpath
   volumeMode: Filesystem
 
 namespace: vertex-100070307
