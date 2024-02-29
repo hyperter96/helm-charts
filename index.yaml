@@ -3,6 +3,16 @@ entries:
   vnp:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-02-29T10:11:26.073588162Z"
+    description: A Helm chart for Kubernetes
+    digest: bb496461f7301e0866f581ed055e10b2ffc951ac683611b5e2ed8cc0c02755a9
+    name: vnp
+    type: application
+    urls:
+    - https://github.com/hyperter96/helm-charts/releases/download/vnp-0.1.4/vnp-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-02-29T10:02:55.427231809Z"
     description: A Helm chart for Kubernetes
     digest: 5e09a01a4d943029e1bd12f5b8dfb9ffefde0d99e3d50e20a710b4cac46dc81b
@@ -41,4 +51,4 @@ entries:
     urls:
     - https://github.com/hyperter96/helm-charts/releases/download/vnp-0.1.0/vnp-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-29T10:02:55.42725374Z"
+generated: "2024-02-29T10:11:26.073611576Z"
