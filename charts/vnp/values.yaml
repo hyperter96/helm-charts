@@ -8,7 +8,7 @@ image:
   repository: dockerhub.vertexwan.cn/atwan/vnp-prod
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2023-08-18-1.5.0.2"
+  tag: "latest"
 
 initImage:
   repository: dockerhub.vertexwan.cn/atwan/vnpconfiginit
