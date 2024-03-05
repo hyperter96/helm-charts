@@ -103,10 +103,10 @@ spec:
         - ip: 210.14.77.209
           hostnames:
             - api.vertexwan.cn
-        - ip: 172.25.0.36
+        - ip: 122.144.164.25
           hostnames:
             - mqtt.vertexwan.cn
-        - ip: 10.208.0.5
+        - ip: 210.14.77.48
           hostnames:
             - auth.vertexwan.cn
         - ip: 172.24.0.31
